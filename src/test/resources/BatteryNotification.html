@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battery Charging Indicator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            background-color: #f0f0f0;
+        }
+
+        .battery-container {
+            position: relative;
+            width: 200px;
+            height: 100px;
+            border: 4px solid black;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-color: #ddd;
+        }
+
+        .battery {
+            height: 100%;
+            width: 0;
+            background-color: #4caf50;
+            transition: width 0.5s ease, background-color 0.5s ease;
+        }
+
+        .battery-head {
+            position: absolute;
+            right: -12px;
+            top: 25px;
+            width: 12px;
+            height: 50px;
+            background-color: black;
+            border-radius: 2px;
+        }
+
+        .input-container {
+            margin-bottom: 10px;
+        }
+
+        input[type="number"] {
+            padding: 8px;
+            font-size: 16px;
+            width: 80px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #beep-notification {
+            display: none;
+            color: red;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Battery Charging Indicator</h1>
+
+    <div class="battery-container">
+        <div class="battery" id="battery"></div>
+        <div class="battery-head"></div>
+    </div>
+
+    <div class="input-container">
+        <label for="charge-percentage">Enter Charging Percentage: </label>
+        <input type="number" id="charge-percentage" min="0" max="100" value="50">
+        <button onclick="updateBattery()">Update</button>
+    </div>
+
+    <div id="beep-notification">
+        Battery low! <button onclick="stopBeep()">Acknowledge</button>
+    </div>
+
+    <audio id="beep-sound" loop>
+        <source src="C:\Users\SIVA\Downloads\beep.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        function updateBattery() {
+            const percentage = document.getElementById('charge-percentage').value;
+            const battery = document.getElementById('battery');
+            const beepSound = document.getElementById('beep-sound');
+            const beepNotification = document.getElementById('beep-notification');
+
+            // Update battery width and color based on percentage
+            battery.style.width = percentage + '%';
+
+            if (percentage < 20) {
+                battery.style.backgroundColor = 'red';
+                beepSound.play();
+                beepNotification.style.display = 'block';
+            } else {
+                battery.style.backgroundColor = '#4caf50';
+                beepSound.pause();
+                beepNotification.style.display = 'none';
+            }
+        }
+
+        function stopBeep() {
+            const beepSound = document.getElementById('beep-sound');
+            const beepNotification = document.getElementById('beep-notification');
+            beepSound.pause();
+            beepNotification.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
